@@ -20,7 +20,12 @@ if(NOT Iconv_FOUND)
         )
     ExternalProject_Get_Property(Iconv INSTALL_DIR)
     set(Iconv_INCLUDE_DIR ${INSTALL_DIR}/include)
-    set(Iconv_LIBRARY ${INSTALL_DIR}/lib/libiconv.dylib)
+    string(CONCAT Iconv_LIBRARY_FILENAME
+        ${CMAKE_SHARED_LIBRARY_PREFIX}
+        iconv
+        ${CMAKE_SHARED_LIBRARY_SUFFIX}
+        )
+    set(Iconv_LIBRARY ${INSTALL_DIR}/lib/${Iconv_LIBRARY_FILENAME})
     set(Iconv_INCLUDE_DIRS "${Iconv_INCLUDE_DIR}")
     set(Iconv_LIBRARIES "${Iconv_LIBRARY}")
 

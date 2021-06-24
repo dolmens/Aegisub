@@ -20,7 +20,9 @@ if(NOT ASS_FOUND)
         )
     ExternalProject_Get_Property(libass INSTALL_DIR)
     set(ASS_INCLUDE_DIR ${INSTALL_DIR}/include)
-    set(ASS_LIBRARY ${INSTALL_DIR}/lib/libass.dylib)
+    set(ASS_LIBRARY_FILENAME
+        ${CMAKE_SHARED_LIBRARY_PREFIX}ass${CMAKE_SHARED_LIBRARY_SUFFIX})
+    set(ASS_LIBRARY ${INSTALL_DIR}/lib/${ASS_LIBRARY_FILENAME})
 
     file(MAKE_DIRECTORY ${ASS_INCLUDE_DIR})
 endif()
