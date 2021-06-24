@@ -14,7 +14,7 @@
 //
 // Aegisub Project http://www.aegisub.org/
 
-#include "retina_helper.h"
+#include "../retina_helper.h"
 
 #include <Cocoa/Cocoa.h>
 #include <wx/window.h>

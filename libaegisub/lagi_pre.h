@@ -1,6 +1,6 @@
 #ifdef __cplusplus
 #ifndef _WIN32
-#include "../acconf.h"
+#include "acconf.h"
 #endif
 
 #define WIN32_LEAN_AND_MEAN

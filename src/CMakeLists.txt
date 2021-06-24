@@ -1,0 +1,243 @@
+add_subdirectory(libresrc)
+
+add_executable(aegisub
+    MatroskaParser.c
+    aegisublocale.cpp
+    ass_attachment.cpp
+    ass_dialogue.cpp
+    ass_entry.cpp
+    ass_export_filter.cpp
+    ass_exporter.cpp
+    ass_file.cpp
+    ass_karaoke.cpp
+    ass_override.cpp
+    ass_parser.cpp
+    ass_style.cpp
+    ass_style_storage.cpp
+    async_video_provider.cpp
+    audio_box.cpp
+    audio_colorscheme.cpp
+    audio_controller.cpp
+    audio_display.cpp
+    audio_karaoke.cpp
+    audio_marker.cpp
+    audio_player.cpp
+    audio_provider_factory.cpp
+    audio_renderer.cpp
+    audio_renderer_spectrum.cpp
+    audio_renderer_waveform.cpp
+    audio_timing_dialogue.cpp
+    audio_timing_karaoke.cpp
+    auto4_base.cpp
+    auto4_lua.cpp
+    auto4_lua_assfile.cpp
+    auto4_lua_dialog.cpp
+    auto4_lua_progresssink.cpp
+    base_grid.cpp
+    charset_detect.cpp
+    colorspace.cpp
+    colour_button.cpp
+    command/app.cpp
+    command/audio.cpp
+    command/automation.cpp
+    command/command.cpp
+    command/edit.cpp
+    command/grid.cpp
+    command/help.cpp
+    command/keyframe.cpp
+    command/recent.cpp
+    command/subtitle.cpp
+    command/time.cpp
+    command/timecode.cpp
+    command/tool.cpp
+    command/video.cpp
+    command/vis_tool.cpp
+    compat.cpp
+    context.cpp
+    crash_writer.cpp
+    dialog_about.cpp
+    dialog_attachments.cpp
+    dialog_automation.cpp
+    dialog_autosave.cpp
+    dialog_colorpicker.cpp
+    dialog_detached_video.cpp
+    dialog_dummy_video.cpp
+    dialog_export.cpp
+    dialog_export_ebu3264.cpp
+    dialog_fonts_collector.cpp
+    dialog_jumpto.cpp
+    dialog_kara_timing_copy.cpp
+    dialog_log.cpp
+    dialog_paste_over.cpp
+    dialog_progress.cpp
+    dialog_properties.cpp
+    dialog_resample.cpp
+    dialog_search_replace.cpp
+    dialog_selected_choices.cpp
+    dialog_selection.cpp
+    dialog_shift_times.cpp
+    dialog_spellchecker.cpp
+    dialog_style_editor.cpp
+    dialog_style_manager.cpp
+    dialog_styling_assistant.cpp
+    dialog_text_import.cpp
+    dialog_timing_processor.cpp
+    dialog_translation.cpp
+    dialog_version_check.cpp
+    dialog_video_details.cpp
+    dialog_video_properties.cpp
+    export_fixstyle.cpp
+    export_framerate.cpp
+    fft.cpp
+    font_file_lister.cpp
+    frame_main.cpp
+    gl_text.cpp
+    gl_wrap.cpp
+    grid_column.cpp
+    help_button.cpp
+    hotkey.cpp
+    hotkey_data_view_model.cpp
+    initial_line_state.cpp
+    main.cpp
+    menu.cpp
+    mkv_wrap.cpp
+    pen.cpp
+    persist_location.cpp
+    preferences.cpp
+    preferences_base.cpp
+    project.cpp
+    resolution_resampler.cpp
+    search_replace_engine.cpp
+    selection_controller.cpp
+    spellchecker.cpp
+    spline.cpp
+    spline_curve.cpp
+    string_codec.cpp
+    subs_controller.cpp
+    subs_edit_box.cpp
+    subs_edit_ctrl.cpp
+    subs_preview.cpp
+    subtitle_format.cpp
+    subtitle_format_ass.cpp
+    subtitle_format_ebu3264.cpp
+    subtitle_format_encore.cpp
+    subtitle_format_microdvd.cpp
+    subtitle_format_mkv.cpp
+    subtitle_format_srt.cpp
+    subtitle_format_ssa.cpp
+    subtitle_format_transtation.cpp
+    subtitle_format_ttxt.cpp
+    subtitle_format_txt.cpp
+    subtitles_provider.cpp
+    subtitles_provider_libass.cpp
+    text_file_reader.cpp
+    text_file_writer.cpp
+    text_selection_controller.cpp
+    thesaurus.cpp
+    timeedit_ctrl.cpp
+    toggle_bitmap.cpp
+    toolbar.cpp
+    tooltip_manager.cpp
+    utils.cpp
+    validators.cpp
+    vector2d.cpp
+    version.cpp
+    video_box.cpp
+    video_controller.cpp
+    video_display.cpp
+    video_frame.cpp
+    video_out_gl.cpp
+    video_provider_cache.cpp
+    video_provider_dummy.cpp
+    video_provider_manager.cpp
+    video_provider_yuv4mpeg.cpp
+    video_slider.cpp
+    visual_feature.cpp
+    visual_tool.cpp
+    visual_tool_clip.cpp
+    visual_tool_cross.cpp
+    visual_tool_drag.cpp
+    visual_tool_rotatexy.cpp
+    visual_tool_rotatez.cpp
+    visual_tool_scale.cpp
+    visual_tool_vector_clip.cpp
+    )
+
+if(APPLE)
+    target_sources(aegisub
+        PRIVATE
+        font_file_lister_coretext.mm
+        osx/osx_utils.mm
+        osx/retina_helper.mm
+        )
+endif()
+
+if(HUNSPELL_FOUND)
+    target_sources(aegisub
+        PRIVATE
+        spellchecker_hunspell.cpp
+        )
+endif()
+
+if(NOT APPLE AND Fontconfig_FOUND)
+    target_sources(aegisub
+        PRIVATE
+        font_file_lister_fontconfig.cpp
+        )
+endif()
+
+if(OPENAL_FOUND)
+    target_sources(aegisub
+        PRIVATE
+        audio_player_openal.cpp
+        )
+endif()
+
+if(FFMS2_FOUND)
+    target_sources(aegisub
+        PRIVATE
+        ffmpegsource_common.cpp
+        audio_provider_ffmpegsource.cpp
+        video_provider_ffmpegsource.cpp
+        )
+endif()
+
+target_compile_definitions(aegisub
+    PRIVATE
+    ${wxWidgets_DEFINITIONS}
+    )
+
+target_precompile_headers(aegisub
+    PRIVATE
+    "$<$<COMPILE_LANGUAGE:CXX>:${CMAKE_CURRENT_SOURCE_DIR}/agi_pre.h>"
+    )
+
+target_include_directories(aegisub
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    )
+
+target_link_libraries(aegisub
+    PRIVATE
+    libaegisub
+    resrc
+    luabins
+    Iconv::Iconv
+    Boost::chrono
+    Boost::filesystem
+    Boost::thread
+    Boost::locale
+    Boost::regex
+    ASS::ASS
+    ZLIB::ZLIB
+    wxWidgets
+    $<TARGET_NAME_IF_EXISTS:Uchardet::uchardet>
+    $<TARGET_NAME_IF_EXISTS:Hunspell::hunspell>
+    $<TARGET_NAME_IF_EXISTS:Fontconfig::Fontconfig>
+    $<TARGET_NAME_IF_EXISTS:OpenAL::OpenAL>
+    $<TARGET_NAME_IF_EXISTS:FFMS2::ffms2>
+    $<TARGET_NAME_IF_EXISTS:FFTW::fftw>
+    )
+
+
+add_dependencies(aegisub gen_version)
